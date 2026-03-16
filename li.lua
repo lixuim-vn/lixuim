@@ -5,11 +5,11 @@ local _0x2 = _0x1.LocalPlayer
 local _0x3 = lIlIl(lIl1l1(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)) -- RS
 local _0x4 = lIlIl(lIl1l1(84,119,101,101,110,83,101,114,118,105,99,101)) -- TS
 local _0x5 = lIlIl(lIl1l1(67,111,114,101,71,117,105)) -- CoreGui
-local RunService = lIlIl("RunService") -- Thêm RunService siêu tốc
+local RunService = lIlIl("RunService")
 
 local _0x6 = _0x3:WaitForChild(lIl1l1(69,118,101,110,116,115)):WaitForChild(lIl1l1(71,97,109,101,82,101,109,111,116,101,70,117,110,99,116,105,111,110))
 
-_G.IIlIlIll = false -- Toggle Variable
+_G.IIlIlIll = false 
 
 local _GuiName = lIl1l1(80,104,111,110,103,72,117,98,95,86,51,95,70,105,120)
 if _0x5:FindFirstChild(_GuiName) then _0x5[_GuiName]:Destroy() end
@@ -26,12 +26,12 @@ local U_C = Instance.new(lIl1l1(85,73,67,111,114,110,101,114), M_F); U_C.CornerR
 local U_S = Instance.new(lIl1l1(85,73,83,116,114,111,107,101), M_F); U_S.Color = Color3.fromRGB(60,60,60); U_S.Thickness = 1
 
 local T_L = Instance.new(lIl1l1(84,101,120,116,76,97,98,101,108), M_F)
-T_L.Text = lIl1l1(65,85,84,79,32,72,73,84,32,40,65,76,76,32,84,79,79,76,83,41) -- TITLE
+T_L.Text = "AUTO TELEPORT KILL"
 T_L.Font = Enum.Font.GothamBlack; T_L.TextColor3 = Color3.new(1,1,1)
 T_L.BackgroundTransparency = 1; T_L.Size = UDim2.new(1,0,0.2,0); T_L.TextSize = 16
 
 local C_R = Instance.new(lIl1l1(84,101,120,116,76,97,98,101,108), M_F)
-C_R.Text = lIl1l1(67,114,101,58,32,80,104,111,110,103,68,72,80,49,50,51) -- CRE
+C_R.Text = lIl1l1(67,114,101,58,32,80,104,111,110,103,68,72,80,49,50,51)
 C_R.TextColor3 = Color3.fromRGB(150,150,150); C_R.BackgroundTransparency = 1
 C_R.Position = UDim2.new(0,0,0.85,0); C_R.Size = UDim2.new(1,0,0.15,0)
 C_R.Font = Enum.Font.GothamMedium; C_R.TextSize = 12
@@ -43,7 +43,7 @@ B_T.TextColor3 = Color3.fromRGB(255,80,80); B_T.Font = Enum.Font.GothamBold; B_T
 Instance.new(lIl1l1(85,73,67,111,114,110,101,114), B_T).CornerRadius = UDim.new(0,8)
 
 local S_T = Instance.new(lIl1l1(84,101,120,116,76,97,98,101,108), M_F)
-S_T.Text = lIl1l1(83,116,97,116,117,115,58,32,73,100,108,101)
+S_T.Text = "Status: Idle"
 S_T.TextColor3 = Color3.fromRGB(180,180,180); S_T.BackgroundTransparency = 1
 S_T.Position = UDim2.new(0,0,0.62,0); S_T.Size = UDim2.new(1,0,0.15,0); S_T.Font = Enum.Font.Gotham; S_T.TextSize = 13
 
@@ -53,13 +53,13 @@ B_T.MouseButton1Click:Connect(function()
     _G.IIlIlIll = not _G.IIlIlIll
     if _G.IIlIlIll then
         _0x4:Create(B_T, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(0,200,100)}):Play()
-        B_T.Text = "GOD MODE"; B_T.TextColor3 = Color3.new(1,1,1)
-        S_T.Text = "Status: DESTROYING..."
+        B_T.Text = "HUNTING..."; B_T.TextColor3 = Color3.new(1,1,1)
+        S_T.Text = "Teleporting & Killing"
         S_T.TextColor3 = Color3.fromRGB(0,255,100)
     else
         _0x4:Create(B_T, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(45,45,45)}):Play()
         B_T.Text = lIl1l1(79,70,70); B_T.TextColor3 = Color3.fromRGB(255,80,80)
-        S_T.Text = lIl1l1(83,116,97,116,117,115,58,32,73,100,108,101)
+        S_T.Text = "Status: Idle"
         S_T.TextColor3 = Color3.fromRGB(180,180,180)
     end
 end)
@@ -69,10 +69,8 @@ local function _IIllIIIl(_Target)
     if not _Ch then return end
     
     local _MyTool = nil
-    local _Tools = _Ch:GetChildren()
-    for _i = 1, #_Tools do
-        local _v = _Tools[_i]
-        if _v:IsA(lIl1l1(84,111,111,108)) then
+    for _, _v in pairs(_Ch:GetChildren()) do
+        if _v:IsA("Tool") then
             _MyTool = _v
             break
         end
@@ -86,7 +84,7 @@ local function _IIllIIIl(_Target)
             knockback = 50, shouldLock = true, shouldLunge = true,
             hitboxOffset = Vector3.new(0, 0, -1.5), isCritical = true, shouldSlow = false, 
             attackCooldown = 0, damage = 9999, lungeKnockback = 55, cycleIndex = 1,
-            slowMult = 0, hitboxSize = Vector3.new(15, 15, 15), -- Tăng nhẹ Hitbox để dễ trúng hơn
+            slowMult = 0, hitboxSize = Vector3.new(15, 15, 15), 
             weaponDefinition = {
                 attackCycle = {
                     ["1"] = {knockbackMul=1, slowMult=0, attackTime=0, lungeMul=1, slowTime=0},
@@ -100,32 +98,37 @@ local function _IIllIIIl(_Target)
         },
         {{
             knockback = 50, isClosestEnemy = true,
-            origin = _Ch.HumanoidRootPart.Position,
-            enemyModel = _Target, distance = 5,
-            direction = (_Target.HumanoidRootPart.Position - _Ch.HumanoidRootPart.Position).Unit
+            origin = _Target.HumanoidRootPart.Position, -- Lừa server là mình đang vung kiếm từ vị trí của địch
+            enemyModel = _Target, distance = 0, -- Set khoảng cách bằng 0 để bypass chống cheat
+            direction = Vector3.new(0,0,1)
         }}
     }
     
-    -- Xả đạn liên hoàn: Đánh 5 lần trong cùng 1 khoảnh khắc
-    for _hit = 1, 5 do 
+    for _hit = 1, 3 do -- Xả đạn 3 lần mỗi nhịp (giảm bớt để đỡ bị văng game)
         task.spawn(function()
             pcall(function() _0x6:InvokeServer(unpack(_Args)) end)
         end)
     end
 end
 
--- Dùng Heartbeat chạy song song với vật lý của game (nhanh nhất có thể)
+-- Vòng lặp Heartbeat (Siêu tốc độ)
 RunService.Heartbeat:Connect(function()
-    if _G.IIlIlIll and _0x2.Character then
+    if _G.IIlIlIll and _0x2.Character and _0x2.Character:FindFirstChild("HumanoidRootPart") then
         local _P = _0x1:GetPlayers()
         for _j = 1, #_P do
             local _v2 = _P[_j]
+            -- Kiểm tra người chơi khác đang tồn tại và còn sống
             if _v2 ~= _0x2 and _v2.Character and _v2.Character:FindFirstChild("HumanoidRootPart") and _v2.Character:FindFirstChild("Humanoid") and _v2.Character.Humanoid.Health > 0 then
-                -- Kiểm tra khoảng cách để không spam nhầm người ở quá xa (tiết kiệm băng thông gửi lệnh đánh)
-                local _D = (_0x2.Character.HumanoidRootPart.Position - _v2.Character.HumanoidRootPart.Position).Magnitude
-                if _D <= 50 then -- Chỉ xả sát thương nếu quái/người chơi cách dưới 50 studs
-                    _IIllIIIl(_v2.Character) 
-                end
+                
+                -- SIÊU DỊCH CHUYỂN: Dịch chuyển lập tức ra phía sau lưng kẻ địch (cách 3 studs)
+                _0x2.Character.HumanoidRootPart.CFrame = _v2.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 3)
+                
+                -- Ra đòn
+                _IIllIIIl(_v2.Character)
+                
+                -- Lệnh Break để nó chỉ tập trung đánh CHẾT 1 thằng rồi mới bay sang thằng tiếp theo
+                -- Nếu không có break, nó sẽ dịch chuyển loạn xạ quanh bản đồ trong 1 giây và bị giật
+                break 
             end
         end
     end
