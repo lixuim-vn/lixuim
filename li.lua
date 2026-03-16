@@ -5,6 +5,8 @@ local _0x2 = _0x1.LocalPlayer
 local _0x3 = lIlIl(lIl1l1(82,101,112,108,105,99,97,116,101,100,83,116,111,114,97,103,101)) -- RS
 local _0x4 = lIlIl(lIl1l1(84,119,101,101,110,83,101,114,118,105,99,101)) -- TS
 local _0x5 = lIlIl(lIl1l1(67,111,114,101,71,117,105)) -- CoreGui
+local RunService = lIlIl("RunService") -- Thêm RunService siêu tốc
+
 local _0x6 = _0x3:WaitForChild(lIl1l1(69,118,101,110,116,115)):WaitForChild(lIl1l1(71,97,109,101,82,101,109,111,116,101,70,117,110,99,116,105,111,110))
 
 _G.IIlIlIll = false -- Toggle Variable
@@ -51,8 +53,8 @@ B_T.MouseButton1Click:Connect(function()
     _G.IIlIlIll = not _G.IIlIlIll
     if _G.IIlIlIll then
         _0x4:Create(B_T, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(0,200,100)}):Play()
-        B_T.Text = lIl1l1(69,78,65,66,76,69,68); B_T.TextColor3 = Color3.new(1,1,1)
-        S_T.Text = lIl1l1(83,116,97,116,117,115,58,32,65,116,116,97,99,107,105,110,103,46,46,46)
+        B_T.Text = "GOD MODE"; B_T.TextColor3 = Color3.new(1,1,1)
+        S_T.Text = "Status: DESTROYING..."
         S_T.TextColor3 = Color3.fromRGB(0,255,100)
     else
         _0x4:Create(B_T, TweenInfo.new(0.3), {BackgroundColor3 = Color3.fromRGB(45,45,45)}):Play()
@@ -70,7 +72,7 @@ local function _IIllIIIl(_Target)
     local _Tools = _Ch:GetChildren()
     for _i = 1, #_Tools do
         local _v = _Tools[_i]
-        if _v:IsA(lIl1l1(84,111,111,108)) then -- "Tool" check
+        if _v:IsA(lIl1l1(84,111,111,108)) then
             _MyTool = _v
             break
         end
@@ -80,12 +82,11 @@ local function _IIllIIIl(_Target)
     local _Args = {
         lIl1l1(65,116,116,101,109,112,116,87,101,97,112,111,110,72,105,116),
         {
-            -- Chỉnh sửa toàn bộ thời gian đánh về 0 để spam max ping
             attackCycleData = {knockbackMul=1,slowMult=0,attackTime=0,lungeMul=1,slowTime=0},
             knockback = 50, shouldLock = true, shouldLunge = true,
             hitboxOffset = Vector3.new(0, 0, -1.5), isCritical = true, shouldSlow = false, 
-            attackCooldown = 0, damage = 100, lungeKnockback = 55, cycleIndex = 1,
-            slowMult = 0, hitboxSize = Vector3.new(9, 14, 8),
+            attackCooldown = 0, damage = 9999, lungeKnockback = 55, cycleIndex = 1,
+            slowMult = 0, hitboxSize = Vector3.new(15, 15, 15), -- Tăng nhẹ Hitbox để dễ trúng hơn
             weaponDefinition = {
                 attackCycle = {
                     ["1"] = {knockbackMul=1, slowMult=0, attackTime=0, lungeMul=1, slowTime=0},
@@ -105,22 +106,25 @@ local function _IIllIIIl(_Target)
         }}
     }
     
-    -- Sử dụng task.spawn để hàm Invoke không block vòng lặp (giúp bắn remote liên hoàn)
-    task.spawn(function()
-        pcall(function() _0x6:InvokeServer(unpack(_Args)) end)
-    end)
+    -- Xả đạn liên hoàn: Đánh 5 lần trong cùng 1 khoảnh khắc
+    for _hit = 1, 5 do 
+        task.spawn(function()
+            pcall(function() _0x6:InvokeServer(unpack(_Args)) end)
+        end)
+    end
 end
 
-task.spawn(function()
-    while true do
-        task.wait() -- Bỏ 0.1 để chạy mượt 0 giây (theo số frame của game)
-        if _G.IIlIlIll and _0x2.Character then
-            local _P = _0x1:GetPlayers()
-            for _j = 1, #_P do
-                local _v2 = _P[_j]
-                if _v2 ~= _0x2 and _v2.Character and _v2.Character:FindFirstChild(lIl1l1(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116)) and _v2.Character:FindFirstChild(lIl1l1(72,117,109,97,110,111,105,100)) and _v2.Character.Humanoid.Health > 0 then
-                    local _D = (_0x2.Character.HumanoidRootPart.Position - _v2.Character.HumanoidRootPart.Position).Magnitude
-                    if _D then _IIllIIIl(_v2.Character) end
+-- Dùng Heartbeat chạy song song với vật lý của game (nhanh nhất có thể)
+RunService.Heartbeat:Connect(function()
+    if _G.IIlIlIll and _0x2.Character then
+        local _P = _0x1:GetPlayers()
+        for _j = 1, #_P do
+            local _v2 = _P[_j]
+            if _v2 ~= _0x2 and _v2.Character and _v2.Character:FindFirstChild("HumanoidRootPart") and _v2.Character:FindFirstChild("Humanoid") and _v2.Character.Humanoid.Health > 0 then
+                -- Kiểm tra khoảng cách để không spam nhầm người ở quá xa (tiết kiệm băng thông gửi lệnh đánh)
+                local _D = (_0x2.Character.HumanoidRootPart.Position - _v2.Character.HumanoidRootPart.Position).Magnitude
+                if _D <= 50 then -- Chỉ xả sát thương nếu quái/người chơi cách dưới 50 studs
+                    _IIllIIIl(_v2.Character) 
                 end
             end
         end
